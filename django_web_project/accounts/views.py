@@ -4,11 +4,14 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView
 from django.views.generic.base import TemplateView
+from django.contrib.auth.views import LoginView
 
-from .forms import RegistrationForm
+from .forms import RegistrationForm, LoginForm
 
 
 def registration(request):
+    if request.user.is_authenticated:
+        return redirect('home_app:home')
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
@@ -24,7 +27,12 @@ def registration(request):
     return render(request, 'registration.html', context=context)
 
 
-#def login(request):
+class Login(LoginView):
+    template_name = 'login.html'
+    redirect_field_name = 'home_app:home'
+    authentication_form = LoginForm
+    redirect_authenticated_user = True
+    #context_object_name = 'form'
 
 
 # Create your views here.

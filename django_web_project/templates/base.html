@@ -21,11 +21,11 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'home' %}">Home</a>
+            <a class="nav-link" href="{% url 'home_app:home' %}">Home</a>
           </li>
         </ul>
-        <div class="me-2"><a class="nav-link" href="{% url 'registration' %}">Register</a></div>
-        <div class="me-2"><a class="nav-link" href="{% url 'registration' %}">Login</a></div>
+        <div class="me-2"><a class="nav-link" href="{% url 'accounts_app:registration' %}">Register</a></div>
+        <div class="me-2"><a class="nav-link" href="{% url 'accounts_app:login' %}">Login</a></div>
       </div>
     </div>
   </nav>

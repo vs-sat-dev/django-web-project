@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import AuthenticationForm
 
 
 class RegistrationForm(UserCreationForm):
@@ -30,15 +31,13 @@ class RegistrationForm(UserCreationForm):
         }"""
 
 
-class LoginForm(forms.ModelForm):
-    model = User
-    template_name = 'login.html'
-    success_url = 'home.html'
+class LoginForm(AuthenticationForm):
+    username = forms.CharField(max_length=64,
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
+    password = forms.CharField(label='Password', max_length=32,
+                               widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
 
     class Meta:
-        fields = ['email', 'password']
+        model = User
+        fields = ('username', 'password')
 
-        widgets = {
-            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
-            'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
-        }
