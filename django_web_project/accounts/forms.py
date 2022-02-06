@@ -1,13 +1,15 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
+
+from .models import CustomUser
 
 
 class RegistrationForm(UserCreationForm):
     username = forms.CharField(label='Username', max_length=32,
                                widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
-    email = forms.EmailField(label='Email', max_length=64,
+    email = forms.EmailField(label='Email', max_length=254,
                              widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
     password1 = forms.CharField(label='Password', max_length=32,
                                 widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
@@ -20,7 +22,7 @@ class RegistrationForm(UserCreationForm):
                                           ))
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ('username', 'email', 'password1', 'password2', 'terms_of_service')
 
         """widgets = {
@@ -38,6 +40,17 @@ class LoginForm(AuthenticationForm):
                                widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ('username', 'password')
 
+
+class ProfileChangeForm(forms.ModelForm):
+    image = forms.ImageField()
+    username = forms.CharField(label='Username', max_length=32,
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
+    email = forms.EmailField(label='Email', max_length=254,
+                             widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
+
+    class Meta:
+        model = CustomUser
+        fields = ('image', 'email', 'bio')

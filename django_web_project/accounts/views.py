@@ -4,9 +4,12 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView
 from django.views.generic.base import TemplateView
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import UpdateView
 
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, ProfileChangeForm
+from .models import CustomUser
 
 
 def registration(request):
@@ -17,10 +20,10 @@ def registration(request):
         if form.is_valid():
             form.save()
             messages.success(request, f'Your account has been created. You can log in now!')
-            return redirect('login')
+            return redirect('accounts_app:login')
         else:
-            messages.error(request, f'Error')
-            return redirect('registration')
+            messages.error(request, f'{form.errors}')
+            return redirect('accounts_app:registration')
     else:
         form = RegistrationForm()
     context = {'form': form}
@@ -32,7 +35,20 @@ class Login(LoginView):
     redirect_field_name = 'home_app:home'
     authentication_form = LoginForm
     redirect_authenticated_user = True
-    #context_object_name = 'form'
 
+
+class Logout(LogoutView):
+    redirect_field_name = 'home_app:home'
+
+
+class Profile(DetailView):
+    model = CustomUser
+    template_name = 'profile.html'
+
+
+class ProfileChangeView(UpdateView):
+    form = ProfileChangeForm
+    model = CustomUser
+    fields = ['image', 'email', 'bio']
 
 # Create your views here.
