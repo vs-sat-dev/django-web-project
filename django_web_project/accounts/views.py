@@ -47,8 +47,12 @@ class Profile(DetailView):
 
 
 class ProfileChangeView(UpdateView):
-    form = ProfileChangeForm
+    template_name = 'profile_change.html'
+    form_class = ProfileChangeForm
     model = CustomUser
-    fields = ['image', 'email', 'bio']
+
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        return reverse("accounts_app:profile", kwargs={"pk": pk})
 
 # Create your views here.

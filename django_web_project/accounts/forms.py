@@ -45,11 +45,11 @@ class LoginForm(AuthenticationForm):
 
 
 class ProfileChangeForm(forms.ModelForm):
-    image = forms.ImageField()
-    username = forms.CharField(label='Username', max_length=32,
-                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
+    image = forms.ImageField(required=False, widget=forms.FileInput())
     email = forms.EmailField(label='Email', max_length=254,
                              widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
+    bio = forms.CharField(label='Bio',
+                          widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Bio'}))
 
     class Meta:
         model = CustomUser
